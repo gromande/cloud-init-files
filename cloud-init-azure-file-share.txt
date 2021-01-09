@@ -1,12 +1,6 @@
 #cloud-config
-package_upgrade: true
-packages:
-  - openjdk-8-jre-headless
-  - tomcat9
-
 runcmd:
-  - echo "export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64" >> /etc/bash.bashrc
-  - mkdir /mnt/iiq-file-share
+  - mkdir /mnt/file-share
   - mkdir /etc/smbcredentials
 
 write_files:
