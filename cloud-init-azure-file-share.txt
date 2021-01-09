@@ -1,0 +1,21 @@
+#cloud-config
+package_upgrade: true
+packages:
+  - openjdk-8-jre-headless
+  - tomcat9
+
+runcmd:
+  - echo "export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64" >> /etc/bash.bashrc
+  - mkdir /mnt/iiq-file-share
+  - mkdir /etc/smbcredentials
+
+write_files:
+- content: |
+    username=$STORAGE_ACCOUNT_NAME
+    password=$STORAGE_ACCOUNT_KEY
+  owner: root:root
+  path: /etc/smbcredentials/$STORAGE_ACCOUNT_NAME.cred
+  permissions: '0600'
+  
+mounts:
+ - [//$STORAGE_ACCOUNT_NAME.file.core.windows.net/iiq-file-share, /mnt/iiq-file-share, cifs, "nofail,vers=3.0,credentials=/etc/smbcredentials/$STORAGE_ACCOUNT_NAME.cred,serverino"]
